@@ -1,0 +1,23 @@
+name = "Soupe au légume"
+
+#la date d'ajout du plat: Year-Month-Day
+added_date = "2026-08-09" 
+
+# le temp de presentation en minute, -1 si inconnue
+cooking_time = 15
+
+# la liste entiere des ingrédient
+ingredients = ["poireau","pomme de terre"]
+#les ingrédients reellement necessaire
+necessary_ingredients = ["poireau","pomme de terre"]
+
+
+tags = ["liquide","sain"]
+
+recipe = "Fais ça, puis ça et ça"
+
+description = "C'est juste une soupe au légume."
+
+#une note sur 5, -1 si inconnue
+mark = 4
+
