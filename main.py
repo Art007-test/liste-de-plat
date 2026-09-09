@@ -12,8 +12,11 @@ from PySide6.QtWidgets import (
     QListWidget,
     QWidget,
     QHBoxLayout,
+    QVBoxLayout,
     QLabel,
 )
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QFrame
 
 
 # ============================================================
@@ -97,6 +100,14 @@ def search_dishes(dishes, search):
     return results
 
 
+# une ligne qui permet de faire un separateur
+def create_separator():
+    separator = QFrame()
+    separator.setFrameShape(QFrame.Shape.HLine)
+    separator.setFrameShadow(QFrame.Shadow.Plain)
+    separator.setFixedHeight(1)
+    return separator
+
 # ============================================================
 # main window
 # ============================================================
@@ -112,9 +123,11 @@ class MainWindow(QMainWindow):
         # Chargement des plats
         self.dishes = load_dishes()
 
-        # ----------------------------------------------------
+
+
+        #################################################################################################
         # Interface
-        # ----------------------------------------------------
+        #################################################################################################
 
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -129,10 +142,34 @@ class MainWindow(QMainWindow):
         self.dish_name.setStyleSheet(
             "font-size: 24px; font-weight: bold;"
         )
-
+        
+        self.dish_description = QLabel("")
+        self.dish_description.setWordWrap(True)
+        self.dish_description.setStyleSheet("font-size: 16px;")
+        
+        ####################################################################################################
         # Ajout des widgets
+        
+        #la liste a gauche
         layout.addWidget(self.dish_list, 1)
-        layout.addWidget(self.dish_name, 3)
+        
+        #la boite à droite
+        right_layout = QVBoxLayout()
+        
+        right_layout.addStretch(1)
+        
+        right_layout.addWidget(self.dish_name,alignment=Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
+        
+        right_layout.addSpacing(20)
+        right_layout.addWidget(create_separator())
+        
+        right_layout.addWidget(self.dish_description)
+        
+        right_layout.addStretch(10)
+        
+        layout.addLayout(right_layout,3)
+        
+        
 
         # Remplissage de la liste
         self.update_dish_list()
@@ -142,42 +179,41 @@ class MainWindow(QMainWindow):
             self.show_dish
         )
 
-    # --------------------------------------------------------
-    # Liste des plats
-    # --------------------------------------------------------
+    
+    #################################################################################################
     #la liste des plats sur la gauche
     def update_dish_list(self):
         self.dish_list.clear()
 
         #a remplacer avec la vraie recherche
         search = "\\tags:sain"
+        search = ""
         
         result = search_dishes(self.dishes,search)
         
         for dish in result:
             self.dish_list.addItem(dish["name"])
 
-    # --------------------------------------------------------
-    # Affichage d'un plat
-    # --------------------------------------------------------
-
+    
+    #################################################################################################
     #le plat à droite ou il y aura la description
     def show_dish(self, index):
         if index < 0 or index >= len(self.dishes):
             self.dish_name.setText("Aucun plat avec cette recherche")
+            self.dish_description.setText("")
             return
 
         dish = self.dishes[index]
 
         self.dish_name.setText(dish["name"])
+        self.dish_description.setText(dish.get("description","")) #met du vide si la description n'existe pas
 
 
 
 
-# ============================================================
-# Programme principal
-# ============================================================
 
+
+#lancer le truc
 def main():
 
     app = QApplication(sys.argv)
