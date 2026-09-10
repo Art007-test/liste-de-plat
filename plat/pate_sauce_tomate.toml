@@ -6,10 +6,12 @@ added_date = "2026-08-09"
 # le temp de presentation en minute, -1 si inconnue
 cooking_time = 15
 
-# la liste entiere des ingrédient
-ingredients = ["sauce tomate","pate"]
+
 #les ingrédients reellement necessaire
-necessary_ingredients = ["sauce tomate","pate"]
+necessary_ingredients = ["Sauce tomate","Pate"]
+
+# la liste entiere des autres ingrédients
+unnecessary_ingredients = []
 
 
 tags = ["italien","pate","sain"]
