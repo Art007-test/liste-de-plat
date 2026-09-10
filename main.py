@@ -19,15 +19,15 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QFrame
 
 
-# ============================================================
+#################################################################################################
 # Configuration
-# ============================================================
+#################################################################################################
 
 APP_DIR = Path(__file__).parent
 DISHES_DIR = APP_DIR / "plat"
 
 
-# ============================================================
+#################################################################################################
 # used for text normalization
 import unicodedata
 def normalize(text):
@@ -40,9 +40,9 @@ def normalize(text):
     )
     
 
-# ============================================================
+#################################################################################################
 # Gestion des plats
-# ============================================================
+#################################################################################################
 
 def load_dishes():
     #Charge tous les fichiers TOML du dossier des plats
@@ -65,41 +65,91 @@ def load_dishes():
     return plats
 
 
+
+#################################################################################################
 #verifie la recherche
 
-def search_dishes(dishes, search):
+def search_dishes(dishes, search,topic):
     search = normalize(search)
 
     # retourne tous les plats si la recherche est vide
     if not search:
         return dishes
     
-    
     results = []
-
-    for dish in dishes:
-
-        if search in normalize(dish["name"]):
-            results.append(dish)
-            continue
-        
-        if "\\tags:" in search:
-            sub_search = search.replace("\\tags:","")
-            if any(sub_search in normalize(ingredient)
-                for ingredient in dish["tags"]):
-                results.append(dish)
-                continue
-            
-        if "\\ingredients:" in search:
-            sub_search = search.replace("\\ingredients:","")
-            if any(sub_search in normalize(tag)
-                for tag in dish["ingredients"]):
-                results.append(dish)
-                continue
+    if topic in ["name"]:
+        results = search_from_str(search,dishes,topic)
+    elif topic in ["cooking_time","mark"]:
+        results = search_from_int(search,dishes,topic)
+    else:
+        results = search_from_list(search,dishes,topic)
 
     return results
 
 
+def search_from_str(search,dishes,topic):
+    results = []
+    for dish in dishes:
+        if search in normalize(dish[topic]):
+            results.append(dish)
+            continue
+    return results
+
+
+def search_from_int(search,dishes,topic):
+    results = []
+    error = False
+    mode = ""
+    
+    if search[0] == "<":
+        search,error,mode = int_search_mode(search,"<")
+    elif search[0] == "=":
+        search,error,mode = int_search_mode(search,"=")
+    elif search[0] == ">":
+        search,error,mode = int_search_mode(search,">")
+    else:
+        return dishes
+    if error:
+        return dishes
+    
+    for dish in dishes:
+        if mode == "<":
+            if search < dish[topic]:
+                results.append(dish)
+                continue
+        if mode == "=":
+            if dish[topic] == search:
+                results.append(dish)
+                continue
+        if mode == ">":
+            if search > dish[topic]:
+                results.append(dish)
+                continue
+    return results
+
+def int_search_mode(search,mode):
+    search = search.replace(mode,"")
+    error = False
+    try:
+        search = int(search)
+    except:
+        print("Pas que des chiffres dans la recherche.")
+        error = True
+    return search,error,mode
+
+
+def search_from_list(search,dishes,topic):
+    results = []
+    for dish in dishes:
+        if any(search in normalize(i)
+            for i in dish[topic]):
+                results.append(dish)
+                continue
+    return results
+
+
+
+#################################################################################################
 # une ligne qui permet de faire un separateur
 def create_separator():
     separator = QFrame()
@@ -108,9 +158,9 @@ def create_separator():
     separator.setFixedHeight(1)
     return separator
 
-# ============================================================
+#################################################################################################
 # main window
-# ============================================================
+#################################################################################################
 
 class MainWindow(QMainWindow):
 
@@ -186,10 +236,10 @@ class MainWindow(QMainWindow):
         self.dish_list.clear()
 
         #a remplacer avec la vraie recherche
-        search = "\\tags:sain"
+        topic = "name"
         search = ""
         
-        result = search_dishes(self.dishes,search)
+        result = search_dishes(self.dishes,search,topic)
         
         for dish in result:
             self.dish_list.addItem(dish["name"])
@@ -212,7 +262,7 @@ class MainWindow(QMainWindow):
 
 
 
-
+#################################################################################################
 #lancer le truc
 def main():
 
