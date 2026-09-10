@@ -18,6 +18,6 @@ recipe = "Fais ça, puis ça et ça"
 
 description = "Des pates aves des oeufs et des lardons."
 
-#une note sur 5, -1 si inconnue
-mark = 4.5
+#une note sur 10, -1 si inconnue
+mark = 9
 

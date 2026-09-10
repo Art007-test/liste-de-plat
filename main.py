@@ -14,9 +14,9 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QVBoxLayout,
     QLabel,
+    QFrame,
 )
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QFrame
 
 
 #################################################################################################
@@ -158,6 +158,21 @@ def create_separator():
     separator.setFixedHeight(1)
     return separator
 
+def cooking_time_to__text(minute):
+    #si le temp est en dessous d'une heure
+    if minute < 60:
+        return str(minute) + "min"
+    hour = minute // 60
+    minute = minute % 60
+    return str(hour) + "h " + str(minute) + "min"    
+    
+    
+    
+    
+    
+        
+        
+
 #################################################################################################
 # main window
 #################################################################################################
@@ -254,9 +269,8 @@ class MainWindow(QMainWindow):
             return
 
         dish = self.dishes[index]
-
-        self.dish_name.setText(dish["name"])
-        self.dish_description.setText(dish.get("description","")) #met du vide si la description n'existe pas
+        self.dish_name.setText(dish["name"] + "       " + cooking_time_to__text(dish["cooking_time"]))
+        self.dish_description.setText("Description: \n" + dish.get("description","")) #met du vide si la description n'existe pas
 
 
 
