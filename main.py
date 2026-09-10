@@ -15,6 +15,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QLabel,
     QFrame,
+    QLineEdit,
+    QComboBox,
 )
 from PySide6.QtCore import Qt
 
@@ -68,6 +70,9 @@ def load_dishes():
 
 #################################################################################################
 #verifie la recherche
+
+lst_searchable_topics_user = ["Nom","Temps de cuisson","Ingredients","Note","Tags"]
+lst_searchable_topics = ["name","cooking_time","necessary_ingredients","mark","tags"]
 
 def search_dishes(dishes, search,topic):
     search = normalize(search)
@@ -187,6 +192,8 @@ class MainWindow(QMainWindow):
 
         # Chargement des plats
         self.dishes = load_dishes()
+        
+        self.searched_dishes = self.dishes
 
 
 
@@ -197,7 +204,9 @@ class MainWindow(QMainWindow):
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
-        layout = QHBoxLayout(central_widget)
+        main_layout = QVBoxLayout(central_widget)
+        content_layout = QHBoxLayout()
+        bar_layout = QHBoxLayout()
 
         # Liste des plats
         self.dish_list = QListWidget()
@@ -215,8 +224,25 @@ class MainWindow(QMainWindow):
         ####################################################################################################
         # Ajout des widgets
         
+        #la barre de recherche
+        self.search_bar = QLineEdit()
+        self.search_bar.setPlaceholderText("Recherchez un plat: ")
+        self.search_bar.textChanged.connect(self.search)
+        
+        # topic menu
+        self.topic_menu = QComboBox()
+        self.topic_menu.addItems(lst_searchable_topics_user)
+        
+        self.topic_menu.currentTextChanged.connect(lambda: self.search(self.search_bar.text()))
+        
+        bar_layout.addWidget(self.search_bar, 6)
+        bar_layout.addWidget(self.topic_menu, 1)
+        
+        main_layout.addLayout(bar_layout)
+        
+        
         #la liste a gauche
-        layout.addWidget(self.dish_list, 1)
+        content_layout.addWidget(self.dish_list, 1)
         
         #la boite à droite
         right_layout = QVBoxLayout()
@@ -232,34 +258,32 @@ class MainWindow(QMainWindow):
         
         right_layout.addStretch(10)
         
-        layout.addLayout(right_layout,3)
+        #rajout du block de droite au bloc de contenu
+        content_layout.addLayout(right_layout,3)
         
-        
+        main_layout.addLayout(content_layout)
 
         # Remplissage de la liste
-        self.update_dish_list()
+        self.search("")
 
         # Quand on sélectionne un plat
         self.dish_list.currentRowChanged.connect(
             self.show_dish
         )
-
-    
     #################################################################################################
     #la liste des plats sur la gauche
-    def update_dish_list(self):
-        self.dish_list.clear()
-
-        #a remplacer avec la vraie recherche
-        topic = "name"
-        search = ""
+    def search(self,text):
         
-        result = search_dishes(self.dishes,search,topic)
+        topic = lst_searchable_topics[self.topic_menu.currentIndex()]
+        result = search_dishes(self.dishes,text,topic)
+        
+        self.dish_list.clear()
         
         for dish in result:
             self.dish_list.addItem(dish["name"])
+            
+            
 
-    
     #################################################################################################
     #le plat à droite ou il y aura la description
     def show_dish(self, index):
