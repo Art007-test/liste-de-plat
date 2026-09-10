@@ -17,6 +17,7 @@ from PySide6.QtWidgets import (
     QFrame,
     QLineEdit,
     QComboBox,
+    QListWidgetItem,
 )
 from PySide6.QtCore import Qt
 
@@ -267,7 +268,7 @@ class MainWindow(QMainWindow):
         self.search("")
 
         # Quand on sélectionne un plat
-        self.dish_list.currentRowChanged.connect(
+        self.dish_list.currentItemChanged.connect(
             self.show_dish
         )
     #################################################################################################
@@ -280,19 +281,21 @@ class MainWindow(QMainWindow):
         self.dish_list.clear()
         
         for dish in result:
-            self.dish_list.addItem(dish["name"])
+            item = QListWidgetItem(dish["name"])
+            item.setData(Qt.ItemDataRole.UserRole, dish)
+            self.dish_list.addItem(item)
             
             
 
     #################################################################################################
     #le plat à droite ou il y aura la description
-    def show_dish(self, index):
-        if index < 0 or index >= len(self.dishes):
+    def show_dish(self, current_item, previous_item):
+        if current_item is None:
             self.dish_name.setText("Aucun plat avec cette recherche")
             self.dish_description.setText("")
             return
-
-        dish = self.dishes[index]
+        dish = current_item.data(Qt.ItemDataRole.UserRole)
+        
         self.dish_name.setText(dish["name"] + "       " + cooking_time_to__text(dish["cooking_time"]))
         self.dish_description.setText("Description: \n" + dish.get("description","")) #met du vide si la description n'existe pas
 
