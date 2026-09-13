@@ -306,7 +306,6 @@ class MainWindow(QMainWindow):
 #################################################################################################
 #lancer le truc
 def main():
-
     app = QApplication(sys.argv)
 
     window = MainWindow()

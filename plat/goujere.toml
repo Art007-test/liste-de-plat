@@ -1,0 +1,25 @@
+name = "Goujère"
+
+#la date d'ajout du plat: Year-Month-Day
+added_date = "2026-09-13" 
+
+# le temp de presentation en minute, -1 si inconnue
+cooking_time = 20
+
+
+#les ingrédients reellement necessaire
+necessary_ingredients = ["farine","oeuf"]
+
+# la liste entiere des autres ingrédients
+unnecessary_ingredients = []
+
+
+tags = ["liquide","sain"]
+
+recipe = "Fais ça, puis ça et ça"
+
+description = "Un tres bon plat"
+
+#une note sur 10, -1 si inconnue
+mark = 10
+
