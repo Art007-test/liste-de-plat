@@ -13,11 +13,12 @@ necessary_ingredients = ["Sauce tomate","Pate"]
 # la liste entiere des autres ingrédients
 unnecessary_ingredients = []
 
+#Les tags du plat
 tags = ["italien","pate","sain"]
 
 recipe = "Fais ça, puis ça et ça"
 
-description = "Des pates aves de la sauce tomate."
+description = ""
 
 #une note sur 10, -1 si inconnue
 mark = 8

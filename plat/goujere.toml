@@ -4,7 +4,7 @@ name = "Goujère"
 added_date = "2026-09-13" 
 
 # le temp de presentation en minute, -1 si inconnue
-cooking_time = 20
+cooking_time = "bonjour"
 
 
 #les ingrédients reellement necessaire
@@ -16,7 +16,7 @@ unnecessary_ingredients = []
 
 tags = ["liquide","sain"]
 
-recipe = "Fais ça, puis ça et ça"
+recipe = ""
 
 description = "Un tres bon plat"
 

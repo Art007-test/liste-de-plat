@@ -4,7 +4,7 @@ name = "pates carbonara"
 added_date = "2026-08-09" 
 
 # le temp de presentation en minute, -1 si inconnue
-cooking_time = 10
+cooking_time = "10"
 
 
 #les ingrédients reellement necessaire
