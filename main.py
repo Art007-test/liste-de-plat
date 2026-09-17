@@ -1,4 +1,4 @@
-
+#les imports: 
 import sys
 import tomllib
 from pathlib import Path
@@ -23,8 +23,7 @@ from PySide6.QtCore import Qt
 
 
 #################################################################################################
-# Configuration
-#################################################################################################
+# chemin de fichier
 
 APP_DIR = Path(__file__).parent
 DISHES_DIR = APP_DIR / "plat"
@@ -45,11 +44,9 @@ def normalize(text):
 
 #################################################################################################
 # Gestion des plats
-#################################################################################################
 
 def load_dishes():
     #Charge tous les fichiers TOML du dossier des plats
-
     plats = []
 
     for file in DISHES_DIR.glob("*.toml"):
@@ -359,6 +356,12 @@ class MainWindow(QMainWindow):
         self.dish_list.currentItemChanged.connect(
             self.show_dish
         )
+        
+        #cache les trucs inutile au demarage
+        self.dish_recipe_separator.setVisible(False)
+        self.dish_description_container.setVisible(False)
+        
+        
     #################################################################################################
     #la liste des plats sur la gauche
     def search(self,text):
@@ -378,6 +381,7 @@ class MainWindow(QMainWindow):
     #################################################################################################
     #le plat à droite ou il y aura la description
     def show_dish(self, current_item, previous_item):
+        #si il n'y a pas de selection, cacher tous
         if current_item is None:
             self.dish_name.setText("Aucun plat avec cette recherche")
             self.dish_description.setText("")
@@ -396,18 +400,20 @@ class MainWindow(QMainWindow):
         #recupere la recherche
         dish = current_item.data(Qt.ItemDataRole.UserRole)
         
+        ###############################################################
+        # UPDATE LES AFFICHAGES
+        
+        #affiche le nom du plat
         self.dish_name.setText(dish["name"])
         
-        
-        if dish.get("cooking_time","") != "":
-            if dish["cooking_time"] != 0:
-                self.dish_time.setText(cooking_time_to_text(dish["cooking_time"]))
-            else:
-                self.dish_time.setText("")
+        #le temp de cuisson
+        if dish.get("cooking_time",0) != 0:
+            self.dish_time.setText(cooking_time_to_text(dish["cooking_time"]))
         else:
             self.dish_time.setText("")
         
         
+        #la note sur 10
         if dish.get("mark","") != "":
             self.dish_mark.setText(str(dish["mark"]) + "/10")
         else:
@@ -432,11 +438,13 @@ class MainWindow(QMainWindow):
             self.dish_recipe_separator.setVisible(False)
             self.dish_recipe.setText("")
             
+        #les ingrédients necessaires
         if dish.get("necessary_ingredients",[]) != []:
             self.dish_necessary_ingredients.setText("• Ingrédients: \n" + pretty_list(dish.get("necessary_ingredients",[])))
         else:
             self.dish_necessary_ingredients.setText("")
         
+        #les ingrédients pas necessaires
         if dish.get("unnecessary_ingredients",[]) != []:
             self.dish_unnecessary_ingredients.setText("• Ingrédients supplémentaires: \n" + pretty_list(dish.get("unnecessary_ingredients",[])))
         else:
