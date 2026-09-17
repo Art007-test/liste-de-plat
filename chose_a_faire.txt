@@ -1,0 +1,9 @@
+Liste des fonctionnalité à rajouter:
+
+- un bouton pour rajouter des plats
+- un bouton pour modifier les plats avec une option pour le supprimer
+- un vrai readme
+- un dictionnaire pour pouvoir traduire
+- un vrai fichier de config
+- rajouter des recettes
+- possibilité de mettre une image pour un plat

@@ -1,3 +1,5 @@
+#sert juste a faire des tests de tout petit code
+
 import emoji
 
 print(emoji.emojize("heudhegd: :star:"))
