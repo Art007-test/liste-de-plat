@@ -2,7 +2,10 @@
 import sys
 import tomllib
 from pathlib import Path
-
+import tomli_w
+import re
+import unicodedata
+from datetime import date
 
     
     
@@ -18,8 +21,15 @@ from PySide6.QtWidgets import (
     QLineEdit,
     QComboBox,
     QListWidgetItem,
+    QPushButton,
+    QDialog,
 )
 from PySide6.QtCore import Qt
+
+import emoji
+from PySide6.QtGui import QIcon
+
+from new_dish_dialog import NewDishDialog
 
 
 #################################################################################################
@@ -27,6 +37,39 @@ from PySide6.QtCore import Qt
 
 APP_DIR = Path(__file__).parent
 DISHES_DIR = APP_DIR / "plat"
+
+
+def make_filename(name):
+    # Retire les accents
+    name = unicodedata.normalize("NFKD", name)
+    name = name.encode("ascii", "ignore").decode("ascii")
+
+    # Minuscules + remplacement des caractères bizarre
+    name = name.lower()
+    name = re.sub(r"[^a-z0-9]+", "_", name)
+    name = name.strip("_")
+
+    if not name:
+        name = "nouveau_plat"
+
+    return name
+
+
+def emoji_to_icon(emoji_text, size=64):
+    label = QLabel()
+    label.setText(emoji_text)
+    label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+    label.setStyleSheet("QLabel {background: transparent;}")
+
+    font = label.font()
+    font.setPointSize(size)
+    label.setFont(font)
+
+    # Le label est rendu en image
+    pixmap = label.grab()
+
+    return QIcon(pixmap)
 
 
 #################################################################################################
@@ -206,6 +249,8 @@ class MainWindow(QMainWindow):
         self.dishes = load_dishes()
         
         self.searched_dishes = self.dishes
+        
+        self.setWindowIcon(emoji_to_icon(emoji.emojize(":pancakes:")))
 
 
 
@@ -289,7 +334,7 @@ class MainWindow(QMainWindow):
         
         #la barre de recherche
         self.search_bar = QLineEdit()
-        self.search_bar.setPlaceholderText("Recherchez un plat: ")
+        self.search_bar.setPlaceholderText(emoji.emojize(":magnifying_glass_tilted_left: Recherchez un plat: "))
         self.search_bar.textChanged.connect(self.search)
         
         # topic menu
@@ -301,8 +346,29 @@ class MainWindow(QMainWindow):
         bar_layout.addWidget(self.search_bar, 6)
         bar_layout.addWidget(self.topic_menu, 1)
         
-        main_layout.addLayout(bar_layout)
         
+        
+        
+        
+        
+        
+        
+        
+        #le bouton plus
+        self.new_dish_button = QPushButton()
+        self.new_dish_button.setIcon(emoji_to_icon(emoji.emojize(":plus:")))
+        self.new_dish_button.setFixedSize(30, 30)
+        
+        self.new_dish_button.clicked.connect(self.new_dish)
+        
+        bar_layout.addWidget(self.new_dish_button)
+        
+        
+        
+        
+        
+        
+        main_layout.addLayout(bar_layout)
         
         #la liste a gauche
         content_layout.addWidget(self.dish_list, 1)
@@ -407,14 +473,14 @@ class MainWindow(QMainWindow):
         self.dish_name.setText(dish["name"])
         
         #le temp de cuisson
-        if dish.get("cooking_time",0) != 0:
+        if dish.get("cooking_time",0) not in [0,-1]:
             self.dish_time.setText(cooking_time_to_text(dish["cooking_time"]))
         else:
             self.dish_time.setText("")
         
         
         #la note sur 10
-        if dish.get("mark","") != "":
+        if dish.get("mark","") != "" and dish.get("mark","") != -1:
             self.dish_mark.setText(str(dish["mark"]) + "/10")
         else:
             self.dish_mark.setText("")
@@ -450,6 +516,41 @@ class MainWindow(QMainWindow):
         else:
             self.dish_unnecessary_ingredients.setText("")
 
+    
+    #################################################################################################
+    def new_dish(self):
+
+        dialog = NewDishDialog(self)
+
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+
+        dish = dialog.get_data()
+
+        # Date d'ajout
+        dish["added_date"] = date.today().isoformat()
+
+        # Nom du fichier
+        filename = make_filename(dish["name"])
+        path = DISHES_DIR / f"{filename}.toml"
+
+        # Évite d'écraser une recette existante
+        number = 2
+
+        while path.exists():
+            path = DISHES_DIR / f"{filename}_{number}.toml"
+            number += 1
+
+        # Écriture du TOML
+        with open(path, "wb") as file:
+            tomli_w.dump(dish, file)
+
+        # Ajoute immédiatement le plat à l'application
+        dish["_file"] = path
+        self.dishes.append(dish)
+
+        # Actualise la liste
+        self.search(self.search_bar.text())
 
 
 
