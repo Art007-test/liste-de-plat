@@ -7,7 +7,7 @@ import re
 import unicodedata
 from datetime import date
 
-    
+from difflib import SequenceMatcher
     
 from PySide6.QtWidgets import (
     QApplication,
@@ -136,11 +136,16 @@ def search_dishes(dishes, search,topic):
 def search_from_str(search,dishes,topic):
     results = []
     for dish in dishes:
-        if search in normalize(dish[topic]):
+        v = normalize(dish[topic])
+        if search in v or similar(search,v):
             results.append(dish)
-            continue
     return results
 
+def similar(a, b):
+    if SequenceMatcher(None, a, b).ratio() > 0.79:
+        return True
+    else:
+        return False
 
 def search_from_int(search,dishes,topic):
     results = []
@@ -185,13 +190,48 @@ def int_search_mode(search,mode):
 
 
 def search_from_list(search,dishes,topic):
+    search_lst = decoupeur(search)
+    
+    if len(search_lst) == 0:
+        return dishes
+    
+    if len(search_lst) == 1:
+        results = []
+        for dish in dishes:
+            for i in dish[topic]:
+                v = normalize(i)
+                if search in v or similar(search,v):
+                    if dish not in results:
+                        results.append(dish)
+        return results
+
     results = []
-    for dish in dishes:
-        if any(search in normalize(i)
-            for i in dish[topic]):
-                results.append(dish)
-                continue
+    for a in search_lst:
+        for dish in dishes:
+            for i in dish[topic]:
+                v = normalize(i)
+                if a in v or similar(a,v):
+                    if dish not in results:
+                        results.append(dish)
     return results
+
+
+
+def decoupeur(text):
+    a = ""
+    result = []
+    for i in range(len(text)):
+        if text[i] in [",",";",":"]:
+            result.append(a)
+            a = ""
+        else:
+            a = a + text[i]
+    if a not in [",",";",":"]:
+        result.append(a)
+    for _ in result:
+        if "" in result:
+            result.remove("")
+    return result
 
 
 
@@ -376,7 +416,7 @@ class MainWindow(QMainWindow):
         #la liste a gauche
         content_layout.addWidget(self.dish_list, 1)
         
-        #####################################
+        ####################################################
         #la boite à droite
         right_layout = QVBoxLayout()
         
@@ -615,7 +655,6 @@ def main():
     window.show()
 
     sys.exit(app.exec())
-
 
 if __name__ == "__main__":
     main()

@@ -85,7 +85,7 @@ class NewDishDialog(QDialog):
             self.load_dish(dish)
 
     def text_to_list(self, text):
-        """Transforme plusieurs lignes en liste."""
+        #Transforme plusieurs lignes en liste.
 
         return [
             line.strip()
@@ -94,7 +94,7 @@ class NewDishDialog(QDialog):
         ]
 
     def validate(self):
-        """Vérifie les données avant de fermer la fenêtre."""
+        #Vérifie les données avant de fermer la fenêtre.
 
         if not self.name_edit.text().strip():
             QMessageBox.warning(
@@ -131,6 +131,8 @@ class NewDishDialog(QDialog):
 
             "mark": self.mark_edit.value(),
         }
+        
+        
     def load_dish(self, dish):
 
         self.name_edit.setText(dish.get("name", ""))
