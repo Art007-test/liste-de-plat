@@ -1,7 +1,7 @@
 Liste des fonctionnalité à rajouter:
 
 
-- un bouton pour modifier les plats avec une option pour le supprimer
+
 - un vrai readme
 - un dictionnaire pour pouvoir traduire
 - un vrai fichier de config
@@ -10,3 +10,4 @@ Liste des fonctionnalité à rajouter:
 
 Fait:
 - un bouton pour rajouter des plats
+- un bouton pour modifier les plats avec une option pour le supprimer

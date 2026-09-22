@@ -349,9 +349,12 @@ class MainWindow(QMainWindow):
         
         
         
+        #le bouton pour modifier un plat
+        self.edit_dish_button = QPushButton("Modifier")
+        self.edit_dish_button.clicked.connect(self.edit_dish)
+        self.edit_dish_button.setEnabled(False)
         
-        
-        
+        bar_layout.addWidget(self.edit_dish_button)
         
         
         #le bouton plus
@@ -449,7 +452,7 @@ class MainWindow(QMainWindow):
     def show_dish(self, current_item, previous_item):
         #si il n'y a pas de selection, cacher tous
         if current_item is None:
-            self.dish_name.setText("Aucun plat avec cette recherche")
+            self.dish_name.setText("Aucun plat selectionné")
             self.dish_description.setText("")
             self.dish_recipe.setText("")
             self.dish_necessary_ingredients.setText("")
@@ -461,10 +464,14 @@ class MainWindow(QMainWindow):
             self.dish_time.setText("")
             self.dish_mark.setText("")
             
+            self.edit_dish_button.setEnabled(False)
+            
             return
         
         #recupere la recherche
         dish = current_item.data(Qt.ItemDataRole.UserRole)
+        
+        self.edit_dish_button.setEnabled(True)
         
         ###############################################################
         # UPDATE LES AFFICHAGES
@@ -551,6 +558,50 @@ class MainWindow(QMainWindow):
 
         # Actualise la liste
         self.search(self.search_bar.text())
+    
+    #permet de modifier un plat
+    def edit_dish(self):
+
+        current_item = self.dish_list.currentItem()
+
+        if current_item is None:
+            return
+
+        # Récupère le plat associé à l'item
+        old_dish = current_item.data(Qt.ItemDataRole.UserRole)
+
+        # Ouvre la fenêtre en mode modification
+        dialog = NewDishDialog(self, old_dish)
+
+        if dialog.exec() != QDialog.DialogCode.Accepted:
+            return
+
+        # Nouvelles données
+        new_dish = dialog.get_data()
+
+        # On conserve la date d'ajout
+        new_dish["added_date"] = old_dish["added_date"]
+
+        # On conserve le chemin du fichier
+        new_dish["_file"] = old_dish["_file"]
+
+        # Écrit le TOML
+        data_to_save = new_dish.copy()
+        data_to_save.pop("_file", None)
+
+        with open(new_dish["_file"], "wb") as file:
+            tomli_w.dump(data_to_save, file)
+
+        # Met à jour l'objet déjà présent dans self.dishes
+        old_dish.clear()
+        old_dish.update(new_dish)
+
+        # Met à jour l'affichage
+        self.dishes = load_dishes()
+        self.search(self.search_bar.text())
+        
+    
+    
 
 
 

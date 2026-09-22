@@ -11,10 +11,12 @@ from PySide6.QtWidgets import (
 
 class NewDishDialog(QDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, dish=None):
         super().__init__(parent)
+        
+        self.dish = dish
 
-        self.setWindowTitle("Nouvelle recette")
+        self.setWindowTitle("Modifier le plat" if dish else "Nouveau plat")
         self.resize(500, 600)
 
         layout = QFormLayout(self)
@@ -78,6 +80,9 @@ class NewDishDialog(QDialog):
         buttons.rejected.connect(self.reject)
 
         layout.addRow(buttons)
+        
+        if dish is not None:
+            self.load_dish(dish)
 
     def text_to_list(self, text):
         """Transforme plusieurs lignes en liste."""
@@ -126,3 +131,34 @@ class NewDishDialog(QDialog):
 
             "mark": self.mark_edit.value(),
         }
+    def load_dish(self, dish):
+
+        self.name_edit.setText(dish.get("name", ""))
+
+        self.cooking_time_edit.setValue(
+            dish.get("cooking_time", -1)
+        )
+
+        self.mark_edit.setValue(
+            dish.get("mark", -1)
+        )
+
+        self.ingredients_edit.setPlainText(
+            "\n".join(dish.get("unnecessary_ingredients", []))
+        )
+
+        self.necessary_ingredients_edit.setPlainText(
+            "\n".join(dish.get("necessary_ingredients", []))
+        )
+
+        self.tags_edit.setPlainText(
+            "\n".join(dish.get("tags", []))
+        )
+
+        self.description_edit.setPlainText(
+            dish.get("description", "")
+        )
+
+        self.recipe_edit.setPlainText(
+            dish.get("recipe", "")
+        )

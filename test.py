@@ -7,7 +7,7 @@ print(emoji.emojize(":magnifying_glass_tilted_left:"))
 print(emoji.emojize(":pancakes:"))
 
 print(emoji.emojize("heudhegd: :half star:"))
-print(emoji.emojize("heudhegd: :star half:"))
+print(emoji.emojize("heudhegd: :dots:"))
 print(emoji.emojize("heudhegd: :star_half:"))
 print(emoji.emojize("heudhegd: :half_star:"))
 print(emoji.emojize("heudhegd: :star_half:"))
