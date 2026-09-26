@@ -1,18 +1,15 @@
 name = "pates à sauce tomate"
-cooking_time = 15
-unnecessary_ingredients = [
-    "bonjour",
-]
+cooking_time = 5
+unnecessary_ingredients = []
 necessary_ingredients = [
-    "Sauce tomate",
-    "Pate",
+    "pâtes",
+    "sauce tomate",
 ]
 tags = [
     "italien",
-    "pate",
-    "sain",
+    "pâte",
 ]
-recipe = "Fais ça, puis ça et ça"
-description = ""
+recipe = "Faire cuire les pâtes.\nEgouter les pâtes.\nMettre la sauce tomate et mélanger.\nAssaisonner et servir."
+description = "Simplement des pâtes avec de la sauce tomate."
 mark = 8
 added_date = "2026-08-09"

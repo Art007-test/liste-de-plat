@@ -1,0 +1,21 @@
+name = "Gratin de pâte"
+cooking_time = 30
+unnecessary_ingredients = [
+    "dés de jambon",
+    "crème",
+]
+necessary_ingredients = [
+    "pâtes",
+    "fromage",
+    "lait",
+    "oeuf",
+]
+tags = [
+    "pâte",
+    "gratin",
+    "four",
+]
+recipe = "Faire cuire les pâtes, égouter et mettre de coté.\nrépartir les pâtes et le jambon dans un plat beurré.\nRajouter le mélange oeuf, lait, crème.\nEnfourner à 180 °C pendant 20-25 minutes."
+description = ""
+mark = 7
+added_date = "2026-09-26"

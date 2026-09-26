@@ -1,0 +1,12 @@
+name = "Pomme de terre à la poile"
+cooking_time = -1
+unnecessary_ingredients = []
+necessary_ingredients = [
+    "pomme de terre",
+    "huile",
+]
+tags = []
+recipe = "Couper les pommes de terre en morceau.\nFaire chauffer la poêle avec de l'huile.\nY mettre les pommes de terre et couvrir.\nRemuer de temps en temps.\nServir."
+description = ""
+mark = -1
+added_date = "2026-09-26"

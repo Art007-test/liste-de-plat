@@ -1,0 +1,17 @@
+name = "Raclette"
+cooking_time = 15
+unnecessary_ingredients = [
+    "cornichons",
+]
+necessary_ingredients = [
+    "fromage à raclette",
+    "charcuterie",
+    "pomme de terre",
+]
+tags = [
+    "fromage",
+]
+recipe = ""
+description = ""
+mark = 10
+added_date = "2026-09-26"

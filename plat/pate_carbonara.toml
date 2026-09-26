@@ -1,25 +1,20 @@
 name = "pates carbonara"
-
-#la date d'ajout du plat: Year-Month-Day
-added_date = "2026-08-09" 
-
-# le temp de presentation en minute, -1 si inconnue
-cooking_time = "10"
-
-
-#les ingrédients reellement necessaire
-necessary_ingredients = ["oeufs","pate","lardon"]
-
-# la liste entiere des autres ingrédients
-unnecessary_ingredients = ["huile d'olive","creme"]
-
-
-tags = ["italien","pate"]
-
-recipe = "Fais ça, puis ça et ça"
-
+cooking_time = 10
+unnecessary_ingredients = [
+    "huile d'olive",
+    "crème",
+]
+necessary_ingredients = [
+    "oeufs",
+    "pâtes",
+    "lardon",
+    "parmesan",
+]
+tags = [
+    "italien",
+    "pâte",
+]
+recipe = "Faire cuire des lardons dans une poile.\nFaire cuire les pâtes dans de l'eau chaude.\nDans un bol, melangé le jaune d'oeuf et le parmesan (on peut y rajouter une touche d'huile d'olive)\nMélanger tout dans la csserolle et servir."
 description = "Des pates aves des oeufs et des lardons."
-
-#une note sur 10, -1 si inconnue
 mark = 9
-
+added_date = "2026-08-09"

@@ -6,6 +6,7 @@ import tomli_w
 import re
 import unicodedata
 from datetime import date
+import html
 
 from difflib import SequenceMatcher
     
@@ -23,6 +24,7 @@ from PySide6.QtWidgets import (
     QListWidgetItem,
     QPushButton,
     QDialog,
+    QTextBrowser,
 )
 from PySide6.QtCore import Qt
 
@@ -70,6 +72,30 @@ def emoji_to_icon(emoji_text, size=64):
     pixmap = label.grab()
 
     return QIcon(pixmap)
+
+
+
+
+
+def recipe_to_html(recipe):
+    pattern = r"\|([^|\n]+)\|([^|\n]+)\|"
+
+    def replace_link(match):
+        url = html.escape(match.group(1), quote=True)
+        text = html.escape(match.group(2))
+
+        return f'<a href="{url}">{text}</a>'
+
+    # Échapper le reste du texte
+    result = html.escape(recipe)
+
+    # Remplacer les liens
+    result = re.sub(pattern, replace_link, result)
+
+    # Conserver les retours à la ligne
+    result = result.replace("\n", "<br>")
+
+    return result
 
 
 #################################################################################################
@@ -362,11 +388,27 @@ class MainWindow(QMainWindow):
         
         
         #la recette
-        self.dish_recipe = QLabel("")
-        self.dish_recipe.setWordWrap(True)
+        self.dish_recipe = QTextBrowser()
+        self.dish_recipe.setOpenExternalLinks(True)
+        self.dish_recipe.setReadOnly(True)
+        #self.dish_recipe.setWordWrap(True)
         self.dish_recipe.setStyleSheet("font-size: 16px;")
+        self.dish_recipe.setStyleSheet("QTextBrowser {background-color: transparent;border: none;font-size: 16px;};font-size: 16px;")
         self.dish_recipe_separator = create_separator(1)
         
+        
+        #Les tags
+        
+        self.dish_tags_container = QWidget()
+        self.tags_layout = QVBoxLayout(self.dish_tags_container)
+        self.tags_layout.setContentsMargins(0,0,0,0)
+        
+        self.dish_tags = QLabel("")
+        self.dish_tags.setWordWrap(True)
+        self.dish_tags.setStyleSheet("font-size: 16px;")
+        
+        self.tags_layout.addWidget(create_separator(1))
+        self.tags_layout.addWidget(self.dish_tags)
         
         
         ####################################################################################################
@@ -450,6 +492,8 @@ class MainWindow(QMainWindow):
         right_layout.addWidget(self.dish_recipe_separator)
         right_layout.addWidget(self.dish_recipe)
         
+        right_layout.addWidget(self.dish_tags_container)
+        
         right_layout.addStretch(10)
         
         #rajout du block de droite au bloc de contenu
@@ -495,11 +539,14 @@ class MainWindow(QMainWindow):
             self.dish_name.setText("Aucun plat selectionné")
             self.dish_description.setText("")
             self.dish_recipe.setText("")
+            self.dish_tags.setText("")
+            
             self.dish_necessary_ingredients.setText("")
             self.dish_unnecessary_ingredients.setText("")
             
             self.dish_recipe_separator.setVisible(False)
             self.dish_description_container.setVisible(False)
+            self.dish_tags_container.setVisible(False)
             
             self.dish_time.setText("")
             self.dish_mark.setText("")
@@ -537,15 +584,27 @@ class MainWindow(QMainWindow):
         #la description, met rien si la description est vide
         if dish.get("description","") != "":
             self.dish_description_container.setVisible(True)
-            self.dish_description.setText("• Description: \n" + dish.get("description","")+ "\n\n\n") #met du vide si la description n'existe pas
+            self.dish_description.setText("• Description: \n\n" + dish.get("description","")+ "\n\n\n") #met du vide si la description n'existe pas
         else:
             self.dish_description_container.setVisible(False)
             self.dish_description.setText("")
+            
+            
+            
+        #les tags, met rien si la description est vide
+        if dish.get("tags",[]) != []:
+            self.dish_tags_container.setVisible(True)
+            self.dish_tags.setText("• Tags: \n" + pretty_list(dish.get("tags",[]))) #met du vide si la description n'existe pas
+        else:
+            self.dish_tags_container.setVisible(False)
+            self.dish_tags.setText("")
+        
+        
         
         
         #la recette, met rien si la description est vide
         if dish.get("recipe","") != "":
-            self.dish_recipe.setText("• Recette: \n" + dish.get("recipe",""))
+            self.dish_recipe.setHtml(recipe_to_html("• Recette: \n\n" + dish.get("recipe", "")))
             self.dish_recipe_separator.setVisible(True)
         else:
             self.dish_recipe_separator.setVisible(False)

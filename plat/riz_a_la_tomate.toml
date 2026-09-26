@@ -1,0 +1,17 @@
+name = "Riz à la tomate"
+cooking_time = 15
+unnecessary_ingredients = [
+    "branche de thyn",
+]
+necessary_ingredients = [
+    "riz",
+    "tomate",
+    "ail",
+]
+tags = [
+    "sain",
+]
+recipe = "Couper les tomates\nFaire boullir de l'eau dans une casserolle\nAjouter le riz, la tomate, l'ail, le thym.\nLaisset mijoter jusqu'à ce qu'il y est plus d'eau"
+description = ""
+mark = 8
+added_date = "2026-09-26"

@@ -1,0 +1,15 @@
+name = "Cotelette d'agneau à la poêle"
+cooking_time = 10
+unnecessary_ingredients = []
+necessary_ingredients = [
+    "cotelette d'agneau",
+    "beurre",
+]
+tags = [
+    "viande",
+    "agneau",
+]
+recipe = "Faire chauffer la poile avec du beurre.\nY faire cuire les cotelettes.\nAssaisoner et servir."
+description = ""
+mark = 8
+added_date = "2026-09-26"

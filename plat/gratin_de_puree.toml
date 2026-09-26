@@ -1,0 +1,19 @@
+name = "Gratin de purée"
+cooking_time = 15
+unnecessary_ingredients = [
+    "lait",
+]
+necessary_ingredients = [
+    "purée",
+    "oeufs",
+    "fromage à rapé",
+]
+tags = [
+    "purée",
+    "four",
+    "gratin",
+]
+recipe = "Mélanger la purée avec l'oeuf (on peut rajouter du lait pour changer la consistance)\nMettre dans le plat.\nRapper du fromage par dessus.\nEnfourner jusqu'à ce que le fromage change de couleur."
+description = "Un gratin fais avec des reste de purée"
+mark = 8
+added_date = "2026-09-26"

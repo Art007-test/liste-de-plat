@@ -1,0 +1,15 @@
+name = "Tomme vaudoise au four"
+cooking_time = 10
+unnecessary_ingredients = []
+necessary_ingredients = [
+    "tomme vaudoise",
+]
+tags = [
+    "fromage",
+    "salade",
+    "four",
+]
+recipe = "Mettre une tomme vaudoise dans un plat sur du papier sulfurisé.\nEnfourner.\nServir."
+description = "Une simple tomme vaudoise au four à accompagner d'une salade ou de pomme de terre à la poile."
+mark = 8
+added_date = "2026-09-26"

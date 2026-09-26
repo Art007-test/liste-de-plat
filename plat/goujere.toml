@@ -1,25 +1,13 @@
 name = "Goujère"
-
-#la date d'ajout du plat: Year-Month-Day
-added_date = "2026-09-13" 
-
-# le temp de presentation en minute, -1 si inconnue
-cooking_time = "bonjour"
-
-
-#les ingrédients reellement necessaire
-necessary_ingredients = ["farine","oeuf"]
-
-# la liste entiere des autres ingrédients
+cooking_time = 45
 unnecessary_ingredients = []
-
-
-tags = ["liquide","sain"]
-
-recipe = ""
-
+necessary_ingredients = [
+    "farine",
+    "oeuf",
+    "gruyère râpé",
+]
+tags = []
+recipe = "|https://www.marmiton.org/recettes/recette_gougeres-faciles_13241.aspx|la recette sur marmiton|"
 description = "Un tres bon plat"
-
-#une note sur 10, -1 si inconnue
 mark = 10
-
+added_date = "2026-09-13"

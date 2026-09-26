@@ -1,25 +1,19 @@
-name = "Soupe au légume"
-
-#la date d'ajout du plat: Year-Month-Day
-added_date = "2026-08-09" 
-
-# le temp de presentation en minute, -1 si inconnue
-cooking_time = 150
-
-
-#les ingrédients reellement necessaire
-necessary_ingredients = ["poireau","pomme de terre"]
-
-# la liste entiere des autres ingrédients
+name = "Soupe de légume"
+cooking_time = 30
 unnecessary_ingredients = []
-
-
-tags = ["liquide","sain"]
-
-recipe = "Fais ça,\n puis ça et ça"
-
-description = "C'est juste une soupe au légume. Ceci est une description vraiment longue juste pour tester jeuidfhed zugezufdg uzeig diuzg diuzwagdi uzgIU ZGDUZEGDUZW Guzdgdze gdzeg dzegdz gezdg ezdgez gdzegdz egdzegd zegzsgd zkb OPWUD HNJL NDGVW ZG GVTGgzugkiuzgiuzghtfmbhkjgh zfgtgf"
-
-#une note sur 10, -1 si inconnue
+necessary_ingredients = [
+    "poireau",
+    "pomme de terre",
+    "carotte",
+    "panais",
+    "tomate",
+]
+tags = [
+    "soupe",
+    "liquide",
+    "sain",
+]
+recipe = "Couper les légumes en morceau.\nLes faire boullir à petit feu.\nPasser les légume au moulin et rajouter l'eau du bouillon."
+description = "C'est juste une soupe au légume."
 mark = 8
-
+added_date = "2026-08-09"

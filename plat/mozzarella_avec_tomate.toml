@@ -1,0 +1,17 @@
+name = "Mozzarella avec tomate"
+cooking_time = 5
+unnecessary_ingredients = []
+necessary_ingredients = [
+    "mozzarela",
+    "tomate",
+    "huile d'olive",
+]
+tags = [
+    "sain",
+    "salade",
+    "fromage",
+]
+recipe = "Couper les tomates et la mozzarella.\nMettre l'huile d'olive.\nAssaisoner et servir."
+description = ""
+mark = 7
+added_date = "2026-09-26"

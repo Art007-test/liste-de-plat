@@ -1,0 +1,17 @@
+name = "Crottin de chavignol au four"
+cooking_time = 10
+unnecessary_ingredients = []
+necessary_ingredients = [
+    "crottin de chavignol",
+    "pain",
+    "huile d'olive",
+]
+tags = [
+    "fromage",
+    "salade",
+    "four",
+]
+recipe = "Couper le crottin de chavignol en deux.\nLes mettre sur des tranches de pain.\nRajouter un soupçon d'huile et assaisoner.\nEnfourner."
+description = ""
+mark = 8
+added_date = "2026-09-26"
